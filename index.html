@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acts Expedition: Jerusalem to Illyricum</title>
+    <meta name="description" content="Walk the roads that carried hope across empires. An interactive journey through Paul's missionary travels.">
+    <meta name="theme-color" content="#1e40af">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQWN0cyBFeHBlZGl0aW9uIiwic2hvcnRfbmFtZSI6IkFjdHMgRXhwZWRpdGlvbiIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsInRoZW1lX2NvbG9yIjoiIzFlNDBhZiIsImJhY2tncm91bmRfY29sb3IiOiIjMGYxNzJhIn0=">
+    
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --primary-gold: #d97706;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-subtle: #334155;
+            --accent-warm: #f59e0b;
+            --success-green: #10b981;
+            --transition-smooth: all 240ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        .screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            width: 100%;
+        }
+
+        /* Typography */
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .text-5xl { font-size: 3rem; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .font-medium { font-weight: 500; }
+
+        /* Layout Utilities */
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .text-center { text-align: center; }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+
+        /* Spacing */
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+            line-height: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), #1d4ed8);
+            color: white;
+            box-shadow: 0 10px 25px rgba(30, 64, 175, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(30, 64, 175, 0.4);
+            background: linear-gradient(135deg, #1d4ed8, var(--primary-blue));
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-secondary:hover {
+            background: #334155;
+            border-color: #475569;
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--primary-gold), var(--accent-warm));
+            color: white;
+        }
+
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(217, 119, 6, 0.3);
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            border: 1px solid var(--border-subtle);
+            padding: 2rem;
+            transition: var(--transition-smooth);
+        }
+
+        .card:hover {
+            border-color: #475569;
+            transform: translateY(-2px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Splash Screen */
+        .splash-screen {
+            background: linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #0f172a 100%);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .splash-bg-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.1;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .splash-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .splash-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .splash-subtitle {
+            font-size: 1.5rem;
+            color: #cbd5e1;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .splash-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+        }
+
+        .loading-spinner {
+            width: 2rem;
+            height: 2rem;
+            border: 2px solid var(--primary-blue);
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Hero Screen */
+        .hero-screen {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 50m-40 0a40 40 0 1 1 80 0a40 40 0 1 1 -80 0' stroke='%23ffffff' stroke-width='0.5' fill='none' opacity='0.1'/%3E%3C/svg%3E") center/300px 300px;
+            animation: rotate 60s linear infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            padding: 2rem;
+        }
+
+        .hero-icon {
+            font-size: 6rem;
+            margin-bottom: 2rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-description {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Audio Controls */
+        .audio-controls {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .audio-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: var(--transition-smooth);
+            font-size: 1.25rem;
+        }
+
+        .audio-btn:hover {
+            background: var(--border-subtle);
+        }
+
+        .volume-slider {
+            width: 100px;
+            margin-left: 1rem;
+        }
+
+        /* Map Journey */
+        .map-screen {
+            background: var(--dark-bg);
+            padding: 2rem 0;
+        }
+
+        .map-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .map-main {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid var(--border-subtle);
+            min-height: 600px;
+            position: relative;
+        }
+
+        .map-visual {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border-radius: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-routes {
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 500' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M100 400 Q 200 300 400 350 Q 600 400 700 200' stroke='%23fbbf24' stroke-width='3' fill='none' stroke-dasharray='10,5' opacity='0.8'/%3E%3C/svg%3E");
+            background-size: cover;
+        }
+
+        .map-cities {
+            position: absolute;
+            inset: 0;
+        }
+
+        .city-marker {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-warm);
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .city-marker:hover {
+            transform: scale(1.5);
+            background: #ef4444;
+        }
+
+        .city-jerusalem { top: 60%; left: 55%; }
+        .city-antioch { top: 40%; left: 60%; }
+        .city-ephesus { top: 35%; left: 45%; }
+        .city-philippi { top: 25%; left: 40%; }
+        .city-thessalonica { top: 30%; left: 38%; }
+        .city-corinth { top: 45%; left: 35%; }
+        .city-rome { top: 25%; left: 25%; }
+
+        .notes-panel {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid var(--border-subtle);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .scripture-ref {
+            background: rgba(217, 119, 6, 0.1);
+            border-left: 4px solid var(--primary-gold);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        .citation {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        /* Artifacts */
+        .artifacts-screen {
+            background: var(--dark-bg);
+            padding: 2rem 0;
+        }
+
+        .artifacts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .artifact-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .artifact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary-blue);
+        }
+
+        .artifact-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-gold), var(--accent-warm));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .artifact-content {
+            padding: 2rem;
+        }
+
+        .artifact-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .artifact-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .artifact-source {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-style: italic;
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 1rem;
+        }
+
+        /* Dialogues */
+        .dialogue-screen {
+            background: var(--dark-bg);
+            padding: 2rem 0;
+        }
+
+        .dialogue-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .dialogue-content {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 3rem;
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 2rem;
+        }
+
+        .dialogue-speaker {
+            font-weight: 700;
+            color: var(--primary-gold);
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .dialogue-text {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        .dialogue-choices {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .choice-button {
+            background: var(--card-bg);
+            border: 2px solid var(--border-subtle);
+            color: var(--text-primary);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-align: left;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .choice-button:hover {
+            border-color: var(--primary-blue);
+            background: #334155;
+            transform: translateX(8px);
+        }
+
+        .reflection-prompt {
+            background: rgba(107, 114, 128, 0.1);
+            border-left: 4px solid var(--success-green);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        .prompt-title {
+            font-weight: 600;
+            color: var(--success-green);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Journal */
+        .journal-screen {
+            background: var(--dark-bg);
+            padding: 2rem 0;
+        }
+
+        .journal-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+        }
+
+        .journal-editor {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .journal-textarea {
+            width: 100%;
+            min-height: 400px;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: 'Georgia', serif;
+            font-size: 1.125rem;
+            line-height: 1.8;
+            resize: vertical;
+            outline: none;
+        }
+
+        .journal-sidebar {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-subtle);
+            height: fit-content;
+        }
+
+        .journal-prompts {
+            margin-bottom: 2rem;
+        }
+
+        .prompt-item {
+            background: rgba(217, 119, 6, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        /* Teacher Mode */
+        .teacher-screen {
+            background: var(--dark-bg);
+            padding: 2rem 0;
+        }
+
+        .teacher-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .resource-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .resource-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .resource-content {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .discussion-question {
+            background: rgba(30, 64, 175, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        /* End Screen */
+        .end-screen {
+            background: linear-gradient(135deg, #0f172a 0%, #7c3aed 50%, #0f172a 100%);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .end-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .end-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .end-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .end-message {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid var(--border-subtle);
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-main {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-link:hover {
+            color: var(--accent-warm);
+        }
+
+        .footer-donation {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .donate-link {
+            color: var(--primary-gold);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .donate-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Safety Notice */
+        .safety-notice {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin: 2rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .safety-title {
+            font-weight: 600;
+            color: #fca5a5;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 10px 25px rgba(30, 64, 175, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(30, 64, 175, 0.4);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .splash-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .end-title {
+                font-size: 2rem;
+            }
+
+            .map-container,
+            .journal-container {
+                grid-template-columns: 1fr;
+            }
+
+            .teacher-grid,
+            .artifacts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .audio-controls {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .nav-buttons {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                justify-content: center;
+                margin-top: 2rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .splash-title {
+                font-size: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Progressive Web App Styles */
+        @media (display-mode: standalone) {
+            .screen {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Audio Controls -->
+    <div class="audio-controls">
+        <button class="audio-btn" id="musicToggle" title="Toggle Music">🎵</button>
+        <button class="audio-btn" id="narrationToggle" title="Toggle Narration">🎤</button>
+        <input type="range" class="volume-slider" id="volumeControl" min="0" max="100" value="70" title="Volume">
+        <button class="audio-btn" id="speedControl" title="Narration Speed">1x</button>
+    </div>
+
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="screen splash-screen">
+        <div class="splash-bg-pattern"></div>
+        <div class="splash-content">
+            <div class="splash-icon">🗺️</div>
+            <h1 class="splash-title">Acts Expedition</h1>
+            <p class="splash-subtitle">Jerusalem to Illyricum</p>
+            <div class="splash-loading">
+                <div class="loading-spinner"></div>
+                <span>Loading your journey...</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-main">Made by Justin — Depths to the Heights</div>
+            <div class="footer-links">
+                <a href="https://depthstoheights.org" class="footer-link">Website</a>
+                <a href="mailto:depthstoheights@gmail.com" class="footer-link">Email</a>
+                <a href="https://www.paypal.com/donate/?hosted_button_id=8GRE7B8C3TP2U" class="footer-link">Donate</a>
+            </div>
+            <div class="footer-donation">
+                <strong>Free to use.</strong> If this encouraged you, feel free to 
+                <a href="https://www.paypal.com/donate/?hosted_button_id=8GRE7B8C3TP2U" class="donate-link">buy me a coffee</a> 
+                to support more projects — <em>Made by Justin, Depths to the Heights</em>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Screen -->
+    <div id="hero-screen" class="screen hero-screen hidden">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-icon">⛵</div>
+            <h1 class="hero-title">Walk the roads that carried hope across empires</h1>
+            <p class="hero-description">
+                Journey with Paul through the ancient world as the Gospel spreads from Jerusalem to the ends of the earth. 
+                Experience the challenges, triumphs, and divine appointments that shaped the early Church.
+            </p>
+            <button class="btn btn-primary" onclick="startJourney()">
+                Begin the Expedition ⟶
+            </button>
+        </div>
+    </div>
+
+    <!-- Map Journey -->
+    <div id="map-screen" class="screen map-screen hidden">
+        <div class="container">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold mb-4">Paul's Missionary Journeys</h2>
+                <p class="text-xl text-secondary">Trace the paths that carried the Gospel across the Roman Empire</p>
+            </div>
+
+            <div class="map-container">
+                <div class="map-main">
+                    <div class="map-visual">
+                        <div class="map-routes"></div>
+                        <div class="map-cities">
+                            <div class="city-marker city-jerusalem" data-city="jerusalem" title="Jerusalem"></div>
+                            <div class="city-marker city-antioch" data-city="antioch" title="Antioch"></div>
+                            <div class="city-marker city-ephesus" data-city="ephesus" title="Ephesus"></div>
+                            <div class="city-marker city-philippi" data-city="philippi" title="Philippi"></div>
+                            <div class="city-marker city-thessalonica" data-city="thessalonica" title="Thessalonica"></div>
+                            <div class="city-marker city-corinth" data-city="corinth" title="Corinth"></div>
+                            <div class="city-marker city-rome" data-city="rome" title="Rome"></div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-secondary">Click on any city to explore Paul's ministry there</p>
+                    </div>
+                </div>
+
+                <div class="notes-panel">
+                    <h3 class="text-2xl font-bold mb-4">Journey Notes</h3>
+                    
+                    <div class="scripture-ref">
+                        <h4 class="font-semibold text-primary-gold mb-2">Scripture Foundation</h4>
+                        <p class="mb-2"><strong>Acts 13–28:</strong> The detailed account of Paul's missionary journeys</p>
+                        <p><strong>Romans 15:18–20:</strong> Paul's reflection on his ministry from Jerusalem to Illyricum</p>
+                    </div>
+
+                    <div id="city-info">
+                        <h4 class="font-semibold mb-2">Select a city to learn more</h4>
+                        <p class="text-secondary">Explore how God used Paul in each location to advance His Kingdom.</p>
+                    </div>
+
+                    <div class="mt-6">
+                        <h4 class="font-semibold mb-2">Historical Context</h4>
+                        <p class="text-sm text-muted">
+                            Paul's journeys occurred during the Pax Romana (27 BC - 180 AD), when Roman roads, 
+                            common language (Greek), and relative peace facilitated the rapid spread of the Gospel.
+                        </p>
+                        <div class="citation">
+                            Source: F.F. Bruce, "Paul: Apostle of the Heart Set Free" (1977)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Artifacts Screen -->
+    <div id="artifacts-screen" class="screen artifacts-screen hidden">
+        <div class="container">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">Archaeological Discoveries</h2>
+                <p class="text-xl text-secondary">Explore artifacts that illuminate Paul's world</p>
+            </div>
+
+            <div class="artifacts-grid">
+                <div class="artifact-card" onclick="viewArtifact('coin')">
+                    <div class="artifact-image">🪙</div>
+                    <div class="artifact-content">
+                        <h3 class="artifact-title">Roman Denarius</h3>
+                        <p class="artifact-description">
+                            A silver denarius from the reign of Claudius (41-54 AD), representing the currency Paul would have 
+                            encountered during his travels. These coins facilitated trade across the empire.
+                        </p>
+                        <div class="artifact-source">
+                            Archaeological evidence from Corinth excavations, American School of Classical Studies
+                        </div>
+                    </div>
+                </div>
+
+                <div class="artifact-card" onclick="viewArtifact('letter')">
+                    <div class="artifact-image">📜</div>
+                    <div class="artifact-content">
+                        <h3 class="artifact-title">Papyrus Letter Fragment</h3>
+                        <p class="artifact-description">
+                            A 1st-century papyrus letter fragment demonstrating the writing materials and methods Paul used 
+                            for his epistles. Such letters were the primary means of long-distance communication.
+                        </p>
+                        <div class="artifact-source">
+                            Oxyrhynchus Papyri Collection, Oxford University
+                        </div>
+                    </div>
+                </div>
+
+                <div class="artifact-card" onclick="viewArtifact('port')">
+                    <div class="artifact-image">⚓</div>
+                    <div class="artifact-content">
+                        <h3 class="artifact-title">Ancient Harbor at Caesarea</h3>
+                        <p class="artifact-description">
+                            Underwater archaeology has revealed Herod's magnificent harbor at Caesarea Maritima, 
+                            the very port where Paul departed for Rome as recorded in Acts 27.
+                        </p>
+                        <div class="artifact-source">
+                            Caesarea Maritime Archaeological Project, University of Haifa
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dialogue Screen -->
+    <div id="dialogue-screen" class="screen dialogue-screen hidden">
+        <div class="container">
+            <div class="dialogue-container">
+                <div class="text-center mb-8">
+                    <h2 class="text-4xl font-bold mb-4">Conversations Along the Way</h2>
+                    <p class="text-xl text-secondary">Engage with the people Paul encountered</p>
+                </div>
+
+                <div class="dialogue-content">
+                    <div class="dialogue-speaker" id="dialogue-speaker">Lydia of Thyatira</div>
+                    <div class="dialogue-text" id="dialogue-text">
+                        "I have heard of your God, Paul of Tarsus. My heart is drawn to this message of hope you bring. 
+                        But I must ask—what does this mean for my business, my household, my future?"
+                    </div>
+                    
+                    <div class="dialogue-choices">
+                        <button class="choice-button" onclick="makeChoice(1)">
+                            "God calls us to be faithful stewards of all He has given us, including our work and relationships."
+                        </button>
+                        <button class="choice-button" onclick="makeChoice(2)">
+                            "Following Christ transforms everything, but does not require abandoning our earthly responsibilities."
+                        </button>
+                        <button class="choice-button" onclick="makeChoice(3)">
+                            "Let us speak more about how faith intersects with daily life..."
+                        </button>
+                    </div>
+                </div>
+
+                <div class="reflection-prompt">
+                    <div class="prompt-title">Reflection Question</div>
+                    <p>How do you see faith intersecting with your daily work and relationships? What questions might you have asked Paul?</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journal Screen -->
+    <div id="journal-screen" class="screen journal-screen hidden">
+        <div class="container">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold mb-4">Personal Journal</h2>
+                <p class="text-xl text-secondary">Capture your thoughts and insights from the journey</p>
+            </div>
+
+            <div class="journal-container">
+                <div class="journal-editor">
+                    <textarea 
+                        class="journal-textarea" 
+                        id="journalText" 
+                        placeholder="What is God speaking to your heart through Paul's journey? Record your thoughts, prayers, and reflections here..."
+                    ></textarea>
+                    
+                    <div class="mt-4 flex gap-4">
+                        <button class="btn btn-secondary" onclick="saveJournal()">💾 Save Entry</button>
+                        <button class="btn btn-accent" onclick="exportJournal()">📥 Export Journal</button>
+                    </div>
+                </div>
+
+                <div class="journal-sidebar">
+                    <div class="journal-prompts">
+                        <h3 class="font-semibold mb-4">Reflection Prompts</h3>
+                        
+                        <div class="prompt-item">
+                            <strong>Courage:</strong> Where do you see God calling you to step out in faith like Paul did?
+                        </div>
+                        
+                        <div class="prompt-item">
+                            <strong>Perseverance:</strong> What challenges are you facing that require Paul's kind of endurance?
+                        </div>
+                        
+                        <div class="prompt-item">
+                            <strong>Purpose:</strong> How might God use your unique gifts and circumstances for His Kingdom?
+                        </div>
+                        
+                        <div class="prompt-item">
+                            <strong>Community:</strong> Who are the "Lydia," "Timothy," and "Barnabas" figures in your life?
+                        </div>
+                    </div>
+
+                    <div class="safety-notice">
+                        <div class="safety-title">Important Note</div>
+                        <p>This provides spiritual encouragement and education—not medical advice. 
+                        If you need help: Call/Text 988 (US) or use your local emergency number or trusted counselor/pastor.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Mode -->
+    <div id="teacher-screen" class="screen teacher-screen hidden">
+        <div class="container">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold mb-4">Instructor Resources</h2>
+                <p class="text-xl text-secondary">Comprehensive materials for teaching Paul's missionary journeys</p>
+            </div>
+
+            <div class="teacher-grid">
+                <div class="resource-card">
+                    <h3 class="resource-title">
+                        📋 Lesson Summary
+                    </h3>
+                    <div class="resource-content">
+                        <h4 class="font-semibold mb-2">Key Learning Objectives:</h4>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li>Understand the geographical scope of Paul's missionary work</li>
+                            <li>Recognize how God used circumstances to advance the Gospel</li>
+                            <li>Apply principles of faithful perseverance in challenging circumstances</li>
+                            <li>Appreciate the role of community in Kingdom work</li>
+                        </ul>
+                        
+                        <h4 class="font-semibold mb-2">Scripture Focus:</h4>
+                        <p>Acts 13-28, Romans 15:18-20, 2 Corinthians 11:23-28</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="downloadResource('summary')">
+                        📥 Download Summary
+                    </button>
+                </div>
+
+                <div class="resource-card">
+                    <h3 class="resource-title">
+                        💬 Discussion Questions
+                    </h3>
+                    <div class="resource-content">
+                        <div class="discussion-question">
+                            How did Paul's Roman citizenship and cultural background uniquely equip him for cross-cultural ministry?
+                        </div>
+                        
+                        <div class="discussion-question">
+                            What role did suffering play in advancing the Gospel during Paul's journeys?
+                        </div>
+                        
+                        <div class="discussion-question">
+                            How do we balance strategic planning with dependence on the Holy Spirit's guidance?
+                        </div>
+                        
+                        <div class="discussion-question">
+                            What can we learn from Paul's team-building approach with Timothy, Silas, and others?
+                        </div>
+                        
+                        <div class="discussion-question">
+                            How does Paul's ministry model apply to modern cross-cultural or workplace evangelism?
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="downloadResource('questions')">
+                        📥 Download Questions
+                    </button>
+                </div>
+
+                <div class="resource-card">
+                    <h3 class="resource-title">
+                        📖 Extended Reading
+                    </h3>
+                    <div class="resource-content">
+                        <h4 class="font-semibold mb-2">Recommended Resources:</h4>
+                        <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
+                            <li style="margin-bottom: 0.5rem;">F.F. Bruce, "Paul: Apostle of the Heart Set Free"</li>
+                            <li style="margin-bottom: 0.5rem;">John Stott, "The Message of Acts"</li>
+                            <li style="margin-bottom: 0.5rem;">Ben Witherington III, "The Acts of the Apostles: A Socio-Rhetorical Commentary"</li>
+                            <li style="margin-bottom: 0.5rem;">Eckhard Schnabel, "Early Christian Mission" (2 volumes)</li>
+                        </ul>
+                        
+                        <h4 class="font-semibold mb-2 mt-4">Online Resources:</h4>
+                        <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
+                            <li style="margin-bottom: 0.5rem;">Biblical Archaeological Society - Paul's Journeys</li>
+                            <li style="margin-bottom: 0.5rem;">BiblicalTraining.org - Acts Course</li>
+                            <li style="margin-bottom: 0.5rem;">Logos Bible Software - Paul's Missionary Journeys Maps</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <h3 class="resource-title">
+                        🎯 Application Activities
+                    </h3>
+                    <div class="resource-content">
+                        <h4 class="font-semibold mb-2">Individual Activities:</h4>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
+                            <li style="margin-bottom: 0.5rem;">Map your own "Jerusalem to Illyricum" - where is God calling you to share His love?</li>
+                            <li style="margin-bottom: 0.5rem;">Journal about a time when God used difficulty to accomplish His purposes</li>
+                            <li style="margin-bottom: 0.5rem;">Research the historical context of one of Paul's destinations</li>
+                        </ul>
+                        
+                        <h4 class="font-semibold mb-2">Group Activities:</h4>
+                        <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
+                            <li style="margin-bottom: 0.5rem;">Create a timeline of Paul's journeys with modern parallels</li>
+                            <li style="margin-bottom: 0.5rem;">Role-play conversations Paul might have had with different cultural groups</li>
+                            <li style="margin-bottom: 0.5rem;">Plan a modern "missionary journey" to reach unreached people in your community</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Screen -->
+    <div id="end-screen" class="screen end-screen hidden">
+        <div class="end-content">
+            <div class="end-icon">🏆</div>
+            <h1 class="end-title">Journey Complete</h1>
+            <p class="end-message">
+                You have walked the roads that carried hope across empires. Now carry that same hope into your world. 
+                The Gospel that transformed the ancient world continues to transform hearts today—including yours.
+            </p>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="applyLessons()">
+                    Apply Today's Lesson
+                </button>
+                <button class="btn btn-secondary" onclick="shareExperience()">
+                    📤 Invite a Friend
+                </button>
+                <button class="btn btn-accent" onclick="donate()">
+                    ❤️ Support This Ministry
+                </button>
+            </div>
+
+            <div class="safety-notice">
+                <div class="safety-title">Remember</div>
+                <p>This provides spiritual encouragement and education—not medical advice. 
+                If you need help: Call/Text 988 (US) or use your local emergency number or trusted counselor/pastor.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-main">Made by Justin — Depths to the Heights</div>
+            <div class="footer-links">
+                <a href="https://depthstoheights.org" class="footer-link">Website</a>
+                <a href="mailto:depthstoheights@gmail.com" class="footer-link">Email</a>
+                <a href="https://www.paypal.com/donate/?hosted_button_id=8GRE7B8C3TP2U" class="footer-link">Donate</a>
+            </div>
+            <div class="footer-donation">
+                <strong>Free to use.</strong> If this encouraged you, feel free to 
+                <a href="https://www.paypal.com/donate/?hosted_button_id=8GRE7B8C3TP2U" class="donate-link">buy me a coffee</a> 
+                to support more projects — <em>Made by Justin, Depths to the Heights</em>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="nav-buttons">
+        <button class="nav-btn" id="prevBtn" onclick="navigateBack()" title="Previous">←</button>
+        <button class="nav-btn" id="nextBtn" onclick="navigateNext()" title="Next">→</button>
+    </div>
+
+    <script>
+        // Application State
+        let currentScreen = 'splash';
+        let journalEntries = [];
+        let audioSettings = {
+            musicEnabled: true,
+            narrationEnabled: false,
+            volume: 70,
+            speed: 1.0
+        };
+
+        // Screen navigation order
+        const screens = ['splash', 'hero', 'map', 'artifacts', 'dialogue', 'journal', 'teacher', 'end'];
+        const screenElements = {};
+
+        // City information
+        const cityInfo = {
+            jerusalem: {
+                name: "Jerusalem",
+                description: "The birthplace of the early Church. Here, Paul received his calling and later defended his ministry before James and the elders.",
+                scripture: "Acts 9:26-30, Acts 21:17-26",
+                significance: "The center of Jewish faith and the launching point for Gospel expansion."
+            },
+            antioch: {
+                name: "Antioch",
+                description: "The first major Gentile church and Paul's home base. Here believers were first called 'Christians.'",
+                scripture: "Acts 11:19-26, Acts 13:1-3",
+                significance: "A multicultural church that sent out the first missionary teams."
+            },
+            ephesus: {
+                name: "Ephesus",
+                description: "A major commercial center where Paul ministered for three years, establishing a strong church.",
+                scripture: "Acts 19:1-41, Ephesians 1:1",
+                significance: "Strategic location for reaching all of Asia Minor with the Gospel."
+            },
+            philippi: {
+                name: "Philippi",
+                description: "Paul's first European ministry, beginning with Lydia's conversion by the river.",
+                scripture: "Acts 16:11-40, Philippians 1:1",
+                significance: "The beachhead for the Gospel in Europe."
+            },
+            thessalonica: {
+                name: "Thessalonica",
+                description: "A major port city where Paul established a church despite persecution.",
+                scripture: "Acts 17:1-9, 1 Thessalonians 1:1",
+                significance: "A church known for their love and faithful endurance."
+            },
+            corinth: {
+                name: "Corinth",
+                description: "A cosmopolitan trade center where Paul spent 18 months building a diverse church.",
+                scripture: "Acts 18:1-18, 1 Corinthians 1:1",
+                significance: "A model of how the Gospel transforms diverse communities."
+            },
+            rome: {
+                name: "Rome",
+                description: "The capital of the empire where Paul finally arrived as a prisoner, continuing to preach freely.",
+                scripture: "Acts 28:11-31, Romans 1:1",
+                significance: "The ultimate destination - reaching the heart of the empire."
+            }
+        };
+
+        // Initialize application
+        function initializeApp() {
+            // Cache screen elements
+            screens.forEach(screen => {
+                screenElements[screen] = document.getElementById(`${screen}-screen`);
+            });
+
+            // Load saved journal entries
+            loadJournalEntries();
+
+            // Setup city markers
+            setupCityMarkers();
+
+            // Setup audio controls
+            setupAudioControls();
+
+            // Auto-progress from splash screen
+            setTimeout(() => {
+                navigateToScreen('hero');
+            }, 4000);
+
+            // Setup PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('data:text/javascript,self.addEventListener("fetch", function(event) { event.respondWith(fetch(event.request)); });');
+            }
+        }
+
+        // Navigation functions
+        function navigateToScreen(screen) {
+            // Hide current screen
+            if (screenElements[currentScreen]) {
+                screenElements[currentScreen].classList.add('hidden');
+            }
+
+            // Show new screen
+            currentScreen = screen;
+            if (screenElements[currentScreen]) {
+                screenElements[currentScreen].classList.remove('hidden');
+            }
+
+            // Update navigation buttons
+            updateNavigationButtons();
+
+            // Track analytics
+            trackEvent('screen_view', { screen: screen });
+        }
+
+        function navigateNext() {
+            const currentIndex = screens.indexOf(currentScreen);
+            if (currentIndex < screens.length - 1) {
+                navigateToScreen(screens[currentIndex + 1]);
+            }
+        }
+
+        function navigateBack() {
+            const currentIndex = screens.indexOf(currentScreen);
+            if (currentIndex > 0) {
+                navigateToScreen(screens[currentIndex - 1]);
+            }
+        }
+
+        function updateNavigationButtons() {
+            const currentIndex = screens.indexOf(currentScreen);
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            prevBtn.style.display = currentIndex > 0 ? 'flex' : 'none';
+            nextBtn.style.display = currentIndex < screens.length - 1 ? 'flex' : 'none';
+        }
+
+        // Specific navigation functions
+        function startJourney() {
+            navigateToScreen('map');
+        }
+
+        // City marker functionality
+        function setupCityMarkers() {
+            const cityMarkers = document.querySelectorAll('.city-marker');
+            cityMarkers.forEach(marker => {
+                marker.addEventListener('click', function() {
+                    const cityName = this.dataset.city;
+                    showCityInfo(cityName);
+                });
+            });
+        }
+
+        function showCityInfo(cityName) {
+            const info = cityInfo[cityName];
+            const infoContainer = document.getElementById('city-info');
+            
+            if (info) {
+                infoContainer.innerHTML = `
+                    <h4 class="font-semibold mb-2 text-primary-gold">${info.name}</h4>
+                    <p class="mb-3 text-secondary">${info.description}</p>
+                    <div class="scripture-ref" style="margin: 1rem 0; padding: 1rem; background: rgba(217, 119, 6, 0.1); border-left: 4px solid var(--primary-gold); border-radius: 0 0.5rem 0.5rem 0;">
+                        <strong>Scripture:</strong> ${info.scripture}
+                    </div>
+                    <p class="text-sm text-muted"><strong>Significance:</strong> ${info.significance}</p>
+                `;
+                
+                // Visual feedback
+                document.querySelectorAll('.city-marker').forEach(m => m.style.background = '#f59e0b');
+                document.querySelector(`[data-city="${cityName}"]`).style.background = '#ef4444';
+                
+                trackEvent('city_explored', { city: cityName });
+            }
+        }
+
+        // Artifact viewing
+        function viewArtifact(artifactId) {
+            trackEvent('artifact_viewed', { artifact: artifactId });
+            // Could expand this to show detailed artifact modal
+        }
+
+        // Dialogue system
+        let currentDialogue = 0;
+        const dialogues = [
+            {
+                speaker: "Lydia of Thyatira",
+                text: "I have heard of your God, Paul of Tarsus. My heart is drawn to this message of hope you bring. But I must ask—what does this mean for my business, my household, my future?",
+                choices: [
+                    "God calls us to be faithful stewards of all He has given us, including our work and relationships.",
+                    "Following Christ transforms everything, but does not require abandoning our earthly responsibilities.",
+                    "Let us speak more about how faith intersects with daily life..."
+                ]
+            },
+            {
+                speaker: "Timothy",
+                text: "Paul, the road ahead is uncertain and dangerous. How do we know we're following God's will and not just our own desires?",
+                choices: [
+                    "We trust in the Spirit's guidance and the confirmation of our brothers and sisters.",
+                    "Sometimes obedience requires stepping forward in faith before the path becomes clear.",
+                    "The peace of Christ in our hearts often confirms His direction."
+                ]
+            },
+            {
+                speaker: "Roman Centurion",
+                text: "Your message speaks of a kingdom not of this world. How can we serve both Caesar and this Christ you proclaim?",
+                choices: [
+                    "Give to Caesar what belongs to Caesar, and to God what belongs to God.",
+                    "Our ultimate allegiance is to the Kingdom of heaven, but we honor earthly authority when it aligns with God's will.",
+                    "Christ's kingdom transforms how we serve in all our roles."
+                ]
+            }
+        ];
+
+        function makeChoice(choiceIndex) {
+            trackEvent('dialogue_choice', { 
+                dialogue: currentDialogue, 
+                choice: choiceIndex 
+            });
+
+            // Progress to next dialogue or continue journey
+            currentDialogue++;
+            if (currentDialogue < dialogues.length) {
+                loadNextDialogue();
+            } else {
+                setTimeout(() => navigateToScreen('journal'), 1000);
+            }
+        }
+
+        function loadNextDialogue() {
+            if (currentDialogue < dialogues.length) {
+                const dialogue = dialogues[currentDialogue];
+                document.getElementById('dialogue-speaker').textContent = dialogue.speaker;
+                document.getElementById('dialogue-text').textContent = dialogue.text;
+                
+                const choicesContainer = document.querySelector('.dialogue-choices');
+                choicesContainer.innerHTML = '';
+                
+                dialogue.choices.forEach((choice, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'choice-button';
+                    button.textContent = choice;
+                    button.onclick = () => makeChoice(index + 1);
+                    choicesContainer.appendChild(button);
+                });
+            }
+        }
+
+        // Journal functionality
+        function loadJournalEntries() {
+            try {
+                const saved = localStorage.getItem('actsExpeditionJournal');
+                if (saved) {
+                    journalEntries = JSON.parse(saved);
+                    if (journalEntries.length > 0) {
+                        document.getElementById('journalText').value = journalEntries[journalEntries.length - 1].content;
+                    }
+                }
+            } catch (error) {
+                console.warn('Could not load journal entries:', error);
+            }
+        }
+
+        function saveJournal() {
+            const content = document.getElementById('journalText').value;
+            if (content.trim()) {
+                const entry = {
+                    date: new Date().toISOString(),
+                    content: content
+                };
+                
+                journalEntries.push(entry);
+                
+                try {
+                    localStorage.setItem('actsExpeditionJournal', JSON.stringify(journalEntries));
+                    showNotification('Journal entry saved!');
+                    trackEvent('journal_saved');
+                } catch (error) {
+                    showNotification('Could not save journal entry', 'error');
+                }
+            }
+        }
+
+        function exportJournal() {
+            if (journalEntries.length === 0) {
+                showNotification('No journal entries to export');
+                return;
+            }
+
+            const exportContent = journalEntries.map(entry => 
+                `Date: ${new Date(entry.date).toLocaleDateString()}\n\n${entry.content}\n\n---\n\n`
+            ).join('');
+
+            const blob = new Blob([`Acts Expedition Journal\n\n${exportContent}`], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `acts-expedition-journal-${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            trackEvent('journal_exported');
+        }
+
+        // Teacher resources
+        function downloadResource(type) {
+            let content = '';
+            let filename = '';
+
+            if (type === 'summary') {
+                content = `Acts Expedition: Jerusalem to Illyricum - Lesson Summary
+
+Key Learning Objectives:
+• Understand the geographical scope of Paul's missionary work
+• Recognize how God used circumstances to advance the Gospel
+• Apply principles of faithful perseverance in challenging circumstances
+• Appreciate the role of community in Kingdom work
+
+Scripture Focus:
+Acts 13-28, Romans 15:18-20, 2 Corinthians 11:23-28
+
+Historical Context:
+Paul's journeys occurred during the Pax Romana (27 BC - 180 AD), when Roman roads, common language (Greek), and relative peace facilitated the rapid spread of the Gospel.
+
+Key Themes:
+1. Divine Providence - God's sovereignty in directing Paul's path
+2. Cultural Adaptation - Paul's ability to minister across cultures
+3. Perseverance - Continuing ministry despite opposition and hardship
+4. Team Ministry - The importance of companions like Timothy and Silas
+5. Church Planting - Establishing and strengthening local congregations
+
+Made by Justin, Depths to the Heights
+https://depthstoheights.org`;
+                filename = 'acts-expedition-summary.txt';
+            } else if (type === 'questions') {
+                content = `Acts Expedition: Discussion Questions
+
+Exploration Questions:
+1. How did Paul's Roman citizenship and cultural background uniquely equip him for cross-cultural ministry?
+2. What role did suffering play in advancing the Gospel during Paul's journeys?
+3. How do we balance strategic planning with dependence on the Holy Spirit's guidance?
+4. What can we learn from Paul's team-building approach with Timothy, Silas, and others?
+5. How does Paul's ministry model apply to modern cross-cultural or workplace evangelism?
+
+Reflection Questions:
+1. Where do you see God calling you to step out in faith like Paul did?
+2. What challenges are you facing that require Paul's kind of endurance?
+3. How might God use your unique gifts and circumstances for His Kingdom?
+4. Who are the "Lydia," "Timothy," and "Barnabas" figures in your life?
+
+Application Questions:
+1. What is your "Jerusalem to Illyricum" - where is God calling you to share His love?
+2. How can you better support modern missionaries and church planters?
+3. What obstacles in your life might actually be opportunities for the Gospel?
+4. How can your local church better embrace Paul's model of team ministry?
+
+Made by Justin, Depths to the Heights
+https://depthstoheights.org`;
+                filename = 'acts-expedition-discussion-questions.txt';
+            }
+
+            if (content) {
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                trackEvent('resource_downloaded', { type: type });
+            }
+        }
+
+        // Audio controls
+        function setupAudioControls() {
+            const musicToggle = document.getElementById('musicToggle');
+            const narrationToggle = document.getElementById('narrationToggle');
+            const volumeControl = document.getElementById('volumeControl');
+            const speedControl = document.getElementById('speedControl');
+
+            musicToggle.addEventListener('click', () => {
+                audioSettings.musicEnabled = !audioSettings.musicEnabled;
+                musicToggle.style.opacity = audioSettings.musicEnabled ? '1' : '0.5';
+                trackEvent('audio_toggle', { type: 'music', enabled: audioSettings.musicEnabled });
+            });
+
+            narrationToggle.addEventListener('click', () => {
+                audioSettings.narrationEnabled = !audioSettings.narrationEnabled;
+                narrationToggle.style.opacity = audioSettings.narrationEnabled ? '1' : '0.5';
+                trackEvent('audio_toggle', { type: 'narration', enabled: audioSettings.narrationEnabled });
+            });
+
+            volumeControl.addEventListener('input', (e) => {
+                audioSettings.volume = e.target.value;
+            });
+
+            speedControl.addEventListener('click', () => {
+                const speeds = [1.0, 1.25, 1.5, 0.75];
+                const currentIndex = speeds.indexOf(audioSettings.speed);
+                audioSettings.speed = speeds[(currentIndex + 1) % speeds.length];
+                speedControl.textContent = `${audioSettings.speed}x`;
+                trackEvent('speed_changed', { speed: audioSettings.speed });
+            });
+        }
+
+        // End screen actions
+        function applyLessons() {
+            trackEvent('apply_lessons');
+            showNotification('Remember: "I have fought the good fight, I have finished the race, I have kept the faith." - 2 Timothy 4:7');
+        }
+
+        function shareExperience() {
+            trackEvent('share_clicked');
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Acts Expedition: Jerusalem to Illyricum',
+                    text: 'Walk the roads that carried hope across empires. An inspiring journey through Paul\'s missionary travels.',
+                    url: window.location.href
+                });
+            } else {
+                showNotification('Share this experience with friends!');
+            }
+        }
+
+        function donate() {
+            trackEvent('donation_clicked');
+            window.open('https://www.paypal.com/donate/?hosted_button_id=8GRE7B8C3TP2U', '_blank');
+        }
+
+        // Utility functions
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 2rem;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'error' ? '#ef4444' : '#10b981'};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 0.5rem;
+                z-index: 10000;
+                font-weight: 600;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function trackEvent(eventName, data = {}) {
+            // Analytics tracking - placeholder for real implementation
+            console.log('Event:', eventName, data);
+            
+            // Could integrate with real analytics service here
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, data);
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') navigateBack();
+            if (e.key === 'ArrowRight') navigateNext();
+            if (e.key === 'Escape' && currentScreen !== 'splash') navigateToScreen('hero');
+        });
+
+        // PWA install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install suggestion
+            setTimeout(() => {
+                if (confirm('Install Acts Expedition as an app for offline access?')) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        trackEvent('pwa_install', { outcome: choiceResult.outcome });
+                        deferredPrompt = null;
+                    });
+                }
+            }, 30000); // Show after 30 seconds
+        });
+    </script>
+</body>
+</html>
